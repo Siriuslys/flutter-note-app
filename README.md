@@ -1,6 +1,7 @@
 # Flutter Note Taking App
 
-A new Flutter project.
+505221055 - Audrey Sasqhia Wijaya
+Link video: https://youtu.be/k21KZhKgxr0
 
 ## Getting Started
 
