@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tugas3/models/note_model.dart';
 import 'package:tugas3/pages/create_note.dart';
-import 'package:tugas3/pages/home_page.dart'; // Import HomePage
+import 'package:tugas3/pages/home_page.dart';
 import 'package:tugas3/pages/widgets/note_card.dart';
 
 class NotesPage extends StatefulWidget {
@@ -12,7 +12,7 @@ class NotesPage extends StatefulWidget {
 }
 
 class _NotesPageState extends State<NotesPage> {
-  List<Note> notes = List.empty(growable: true);
+  List<Note> notes = [];
 
   @override
   Widget build(BuildContext context) {
@@ -22,26 +22,6 @@ class _NotesPageState extends State<NotesPage> {
       ),
       body: Column(
         children: [
-          // Custom Back Button
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  // Navigate back to HomePage
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomePage(),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-          // List of Notes
           Expanded(
             child: ListView.builder(
               itemCount: notes.length,
@@ -50,8 +30,40 @@ class _NotesPageState extends State<NotesPage> {
                   note: notes[index],
                   index: index,
                   onNoteDeleted: onNoteDeleted,
+                  onNoteEdited: onNoteEdited, 
                 );
               },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomePage(),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 16,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text(
+                "Home",
+                style: TextStyle(
+                  color: Colors.deepPurple,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
         ],
@@ -72,12 +84,20 @@ class _NotesPageState extends State<NotesPage> {
   }
 
   void onNewNoteCreated(Note note) {
-    notes.add(note);
-    setState(() {});
+    setState(() {
+      notes.add(note);
+    });
   }
 
   void onNoteDeleted(int index) {
-    notes.removeAt(index);
-    setState(() {});
+    setState(() {
+      notes.removeAt(index);
+    });
+  }
+
+  void onNoteEdited(int index, Note newNote) {
+    setState(() {
+      notes[index] = newNote;
+    });
   }
 }

@@ -1,50 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:tugas3/models/note_model.dart';
-import 'package:tugas3/pages/note_view.dart';
+import 'package:tugas3/pages/create_note.dart';
 
 class NoteCard extends StatelessWidget {
-  const NoteCard({super.key, required this.note, required this.index, required this.onNoteDeleted});
-
   final Note note;
   final int index;
-
   final Function(int) onNoteDeleted;
+  final Function(int, Note) onNoteEdited; 
 
+  const NoteCard({
+    super.key,
+    required this.note,
+    required this.index,
+    required this.onNoteDeleted,
+    required this.onNoteEdited,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: (){
-        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NoteView(note: note, index: index, onNoteDeleted: onNoteDeleted,)));
-      },
-      child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      note.title,
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: ListTile(
+        title: Text(note.title),
+        subtitle: Text(note.body),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.edit, color: Colors.blue),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => CreateNote(
+                      note: note,
+                      index: index,
+                      onNoteEdited: onNoteEdited,
                     ),
-      
-                    const SizedBox(height: 10,),
-                    Text(
-                      note.body,
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-      
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-      
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
+            IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red),
+              onPressed: () => onNoteDeleted(index),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
