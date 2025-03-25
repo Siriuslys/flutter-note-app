@@ -39,8 +39,10 @@ class _CreateNoteState extends State<CreateNote> {
     );
 
     if (widget.note == null) {
+      // Buat catatan baru
       widget.onNewNoteCreated?.call(newNote);
     } else {
+      // Edit catatan yang sudah ada
       widget.onNoteEdited?.call(widget.index!, newNote);
     }
 
